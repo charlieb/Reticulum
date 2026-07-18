@@ -1,10 +1,12 @@
-### 2026-06-01: RNS 1.3.5
+### 2026-07-10: RNS 1.3.8
 
-This maintenance release contains an important fix for `AutoInterface` reliability when roaming between different physical networks.
+This release fixes various inconsistencies in link and hop-count related APIs.
 
 **Changes**
-- Fixed UDP listener replacement deadlocking inbound AutoInterface traffic when fast-roaming between physical interfaces or WiFi APs
-- Fixed some paths never resolving when using other interfaces at the same time as a deadlocked AutoInterface
+- Fixed inconsistent link traffic stats calculation
+- Fixed link hop-count metric only being available on initiator side
+- Fixed potential hop-count serialization error on transport
+- Updated `WeaveInterface` to support latest Weave firmware
 
 **Verified Retrieval**
 You can retrieve and verify this release over Reticulum using the built-in `rngit release` utility. To retrieve only the installation `.whl` package, and the release manifest for future updates, you can use:
@@ -33,6 +35,29 @@ rnid -i bc7291552be7a58f361522990465165c -V rns_*.rsm *.rsg
 ```
 
 The `rnid` utility will then verify the signatures, and display whether they are valid. If the signature cannot be verified, the release has been tampered with and should be discarded.
+
+### 2026-07-03: RNS 1.3.7
+
+This maintenance release improves announces propagation logic, and adds additional options for configuring announce propagation and interface behavior in transport mode.
+
+**Changes**
+- Added `internal` interface mode
+- Added `recursive_prs` interface option
+- Added `announces_from_internal` interface option
+- Added new options to the manual
+- Improved and cleaned up announce propagation logic
+
+### 2026-07-03: RNS 1.3.6
+
+This release contained a bug in the local instance transport handling, and was superseded by version `1.3.7`.
+
+### 2026-06-01: RNS 1.3.5
+
+This maintenance release contains an important fix for `AutoInterface` reliability when roaming between different physical networks.
+
+**Changes**
+- Fixed UDP listener replacement deadlocking inbound AutoInterface traffic when fast-roaming between physical interfaces or WiFi APs
+- Fixed some paths never resolving when using other interfaces at the same time as a deadlocked AutoInterface
 
 ### 2026-05-29: RNS 1.3.4
 
