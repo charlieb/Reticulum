@@ -222,6 +222,7 @@ class ROM():
     BOARD_XIAO_S3       = 0x3E
     MODEL_DE            = 0xDE # Xiao ESP32S3 with Wio-SX1262 module, 433 MHz
     MODEL_DD            = 0xDD # Xiao ESP32S3 with Wio-SX1262 module, 868 MHz
+    MODEL_DF            = 0xDF # Xiao ESP32S3 with Wio-SX1262 module, 915 MHz
 
     PRODUCT_HMBRW  = 0xF0
     MODEL_FF       = 0xFF
@@ -352,6 +353,7 @@ models = {
     0x21: [820000000, 960000000, 22, "820 - 960 MHz", "rnode_firmware_opencom_xl.zip", "SX1262 + SX1280"],
     0xDE: [420000000, 520000000, 22, "420 - 520 MHz", "rnode_firmware_xiao_esp32s3.zip", "SX1262"],
     0xDD: [850000000, 950000000, 22, "850 - 950 MHz", "rnode_firmware_xiao_esp32s3.zip", "SX1262"],
+    0xDF: [902000000, 928000000, 22, "902 - 928 MHz", "rnode_firmware_xiao_esp32s3.zip", "SX1262"],
     0xFE: [100000000, 1100000000, 17, "(Band capabilities unknown)", None, "Unknown"],
     0xFF: [100000000, 1100000000, 14, "(Band capabilities unknown)", None, "Unknown"],
 }
@@ -2485,16 +2487,20 @@ def main():
                 print("\nWhat band is this XIAO esp32s3 wio module for?\n")
                 print("[1] 433 MHz")
                 print("[2] 868 MHz")
+                print("[3] 915 MHz")
                 print("\n? ", end="")
                 try:
                     c_model = int(input())
-                    if c_model < 1 or c_model > 2:
+                    if c_model < 1 or c_model > 3:
                         raise ValueError()
                     elif c_model == 1:
                         selected_model = ROM.MODEL_DE
                         selected_platform = ROM.PLATFORM_ESP32
                     elif c_model == 2:
                         selected_model = ROM.MODEL_DD
+                        selected_platform = ROM.PLATFORM_ESP32
+                    elif c_model == 3:
+                        selected_model = ROM.MODEL_DF
                         selected_platform = ROM.PLATFORM_ESP32
                 except Exception as e:
                     print("That band does not exist, exiting now.")

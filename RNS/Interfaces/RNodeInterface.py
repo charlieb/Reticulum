@@ -657,15 +657,27 @@ class RNodeInterface(Interface):
         RNS.panic()
 
 
+    def radioStateConfigured(self):
+        if (self.r_frequency != None and abs(self.frequency - int(self.r_frequency)) > 100): return False
+        if (self.bandwidth != self.r_bandwidth): return False
+        if (self.txpower != self.r_txpower): return False
+        if (self.sf != self.r_sf): return False
+        if (self.state != self.r_state): return False
+        return True
+
     def validateRadioState(self):
         RNS.log("Waiting for radio configuration validation for "+str(self)+"...", RNS.LOG_VERBOSE)
-        if self.use_ble: sleep(1.00)
-        elif self.use_tcp: sleep(1.5)
-        else: sleep(0.25)
+        if self.use_ble: sleep(1.00); poll_timeout = 5.00
+        elif self.use_tcp: sleep(1.5); poll_timeout = 6.00
+        else: sleep(0.25); poll_timeout = 3.00
 
         if self.use_ble and self.ble != None and self.ble.device_disappeared:
             RNS.log(f"Device disappeared during radio state validation for {self}", RNS.LOG_ERROR)
             return False
+
+        poll_start = time.time()
+        while not self.radioStateConfigured() and time.time() < poll_start+poll_timeout:
+            sleep(0.1)
 
         self.validcfg = True
         if (self.r_frequency != None and abs(self.frequency - int(self.r_frequency)) > 100):
